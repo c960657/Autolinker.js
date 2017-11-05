@@ -1545,22 +1545,6 @@ describe( "Autolinker", function() {
 			} );
 
 
-			it( "should not fail with a Maximum Call Stack Size Exceeded for an " +
-				"input with a large number of html entities (Issue #171)",
-			function() {
-				var testStr = (function() {
-					var t = [];
-					for (var i = 0; i < 50000; i++) {
-						t.push( ' /&gt;&lt;br' );
-					}
-					return t.join( '' );
-				})();
-
-				var result = autolinker.link( testStr );
-				expect( result ).toBe( testStr );
-			} );
-
-
 			it( "should NOT modify the email address with other tags when inside another anchor", function() {
 				var input = [
 					'<div>First name: Subin</div>',
@@ -2655,6 +2639,20 @@ describe( "Autolinker", function() {
 
 				return errorMsg.join( '\n' );
 			}
+		} );
+
+
+		it( "should be able to parse a very long string", function() {
+			var testStr = (function() {
+				var t = [];
+				for (var i = 0; i < 50000; i++) {
+					t.push( ' foo' );
+				}
+				return t.join( '' );
+			})();
+
+			var result = Autolinker.link( testStr );
+			expect( result ).toBe( testStr );
 		} );
 
 	} );
